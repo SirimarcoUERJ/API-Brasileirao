@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 
 const create = async (req, res) => {
     const { name, nick, email, password, avatar } = req.body;
-    let stt;
 
     // Verificar se o usuario existe no banco de dados, ainda n estamos conectados em um DB
 
@@ -64,9 +63,6 @@ const updateOne = async (req, res) => {
     const id = req.params.id;
     const parameter = req.body;
 
-    const keys = Object.keys(parameter);
-    const values = Object.values(parameter);
-
     if (!mongoose.Types.ObjectId.isValid) {
         return res.status(400).send({ message: "Id not found" })
     };
@@ -77,16 +73,43 @@ const updateOne = async (req, res) => {
         return res.status(400).send({ message: "User not found" })
     };
 
-    for (let _ = 0; _ < keys.length; _++) {
-        user[keys[_]] = values[_]
-    };
-
-    user.save();
+    await userService.updateOneService(user, parameter);
 
     res.status(200).send({
-        message: "User update succesfully",
-        user
+        message: "User successfully updated"
     });
+};
+
+const deleteOne = async (req, res) => {
+    const id = req.params.id;
+    
+    if (!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(400).send({"message": "Id not found"})
+    };
+
+    const user = await userService.findByIdService(id);
+
+    if (!user){
+        return res.status(400).send({"message": "User not found"});
+    }
+
+    await userService.deleteOneService(user);
+
+    res.status(200).send({"message": "User has been deleted"});
+};
+
+const deleteOneBySearch = async (req, res) => {
+    const parameter = req.body;
+
+    const user = await userService.findService(parameter);
+
+    if (!user[0] || user[0] == "") {
+        return res.status(400).send({ message: "User not found" });
+    };
+
+    await userService.deleteOneService(user[0]);
+
+    res.status(200).send({"message": "User has been deleted"});
 };
 
 const checker = (name, nick, email, password) => {
@@ -115,4 +138,6 @@ module.exports = {
     find,
     findById,
     updateOne,
+    deleteOne,
+    deleteOneBySearch,
 };
