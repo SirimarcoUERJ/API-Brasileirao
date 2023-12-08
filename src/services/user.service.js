@@ -4,35 +4,31 @@ const createService = (body) => {
     return User.create(body)
 };
 
-const findService = (parameter) => {
-    return User.find(parameter)
+const findAllService = () => {
+    return User.find();
 };
 
 const findByIdService = (id) => {
     return User.findById(id);
 };
 
-const updateOneService = (user, parameter) => {
-    const keys = Object.keys(parameter);
-    const values = Object.values(parameter);
-    
-    for (let _ = 0; _ < keys.length; _++) {
-        user[keys[_]] = values[_]
-    };
-
-    user.save();
-
-    return user;
+const findByEmailService = (email) => {
+    return User.find({ email });
 };
 
-const deleteOneService = (user) => {
-    return User.deleteOne({"_id": user._id});
+const updateByIdService = (id, parameter) => {
+    return User.findOneAndUpdate({_id: id}, parameter);
+};
+
+const deleteByIdService = (id) => {
+    return User.deleteOne({"_id": id});
 }
 
 module.exports = {
     createService,
-    findService,
+    findAllService,
     findByIdService,
-    updateOneService,
-    deleteOneService
+    findByEmailService,
+    updateByIdService,
+    deleteByIdService
 };
