@@ -1,14 +1,19 @@
-const express = require("express");
-const userRoute = require("./src/routes/user.routes.js");
-const connectDatabase = require("./src/database/db.js");
+import express from "express";
+import connectDatabase from "./src/database/db.js";
+import dotenv from "dotenv";
+
+import userRoute from "./src/routes/user.routes.js";
+import loginRoute from "./src/routes/login.routes.js";
+
+dotenv.config();
+connectDatabase();
 
 const app = express();
-const port = 3003;
-
-connectDatabase();
+const port = process.env.PORT || 3003;
 
 app.use(express.json());
 app.use("/user", userRoute);
+app.use("/login", loginRoute);
 
 app.listen(port, () => {
     console.log(`Express listening on port ${port}`);

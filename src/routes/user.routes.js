@@ -1,12 +1,14 @@
-const route = require("express").Router();
-const userController = require("../controllers/user.controller");
-const middlewares = require("../middlewares/global.middlewares");
+import express  from "express";
+import userController from "../controllers/user.controller.js";
+import middlewares from "../middlewares/global.middlewares.js";
 
-route.post("/", userController.create);
-route.get("/", userController.findAll);
-route.get("/:id", middlewares.validId, middlewares.checkUser, userController.findById);
-route.patch("/:id", middlewares.validId, middlewares.checkUser, userController.updateById);
-route.delete("/:id", middlewares.validId, middlewares.checkUser, userController.deleteById);
-// route.delete("/", userController.deleteOne);
+const router = express.Router();
 
-module.exports = route;
+router.post("/", userController.create);
+router.get("/", userController.findAll);
+router.get("/:id", middlewares.validId, middlewares.checkUser, userController.findById);
+router.patch("/:id", middlewares.validId, middlewares.checkUser, userController.updateById);
+router.delete("/:id", middlewares.validId, middlewares.checkUser, userController.deleteById);
+// router.delete("/", userController.deleteOne);
+
+export default router;

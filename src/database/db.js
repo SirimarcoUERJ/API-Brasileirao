@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const connectDatabase = () => {
     console.log("Wait, We are connecting to the DataBase!")
 
-    mongoose.connect("mongodb+srv://root:root@maincluster.f0fdbsc.mongodb.net/?retryWrites=true&w=majority")
+    mongoose.connect( process.env.MONGODB_URI )
         .then(() => { console.log("Database connected") })
         .catch((error) => { console.log(error) });
 };
 
-module.exports = connectDatabase;
+export default connectDatabase;

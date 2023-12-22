@@ -1,4 +1,4 @@
-const userService = require("../services/user.service");
+import userService from "../services/user.service.js";
 
 const create = async (req, res) => {
     try {
@@ -18,7 +18,7 @@ const create = async (req, res) => {
             return res.status(400).send({ "message": "Complete all fields correctly" });
         };
 
-        const user = await userService.createService(req.body);//erro no body
+        const user = await userService.createService(req.body);
 
 
         if (!user) {
@@ -77,13 +77,13 @@ const updateById = async (req, res) => {
         const id = req.id;
         const parameter = req.body;
 
-        if (parameter.email) {
-            const userUnique = await userService.findByEmailService(parameter.email);
+        // if (parameter.email) {
+        //     const userUnique = await userService.findByEmailService(parameter.email);
 
-            if (userUnique.length > 0) {
-                return res.status(400).send({ "message": "This email already exists in the Database" });
-            };
-        };
+        //     if (userUnique.length > 0) {
+        //         return res.status(400).send({ "message": "This email already exists in the Database" });
+        //     };
+        // };
 
         await userService.updateByIdService(id, parameter);
 
@@ -108,8 +108,6 @@ const deleteById = async (req, res) => {
         console.log(err);
     };
 };
-
-// const deleteOne = async (req, res) => {
 //     const parameter = req.body;
 
 //     const user = await userService.findService(parameter);
@@ -123,7 +121,7 @@ const deleteById = async (req, res) => {
 //     res.status(200).send({ "message": "User has been deleted" });
 // };
 
-module.exports = {
+export default {
     create,
     findAll,
     findById,
